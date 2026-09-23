@@ -1,11 +1,5 @@
-const secretNumber = 2 % 10;
+let userName = prompt("Please, enter your name")
+let number1 = Number(prompt("Please, enter first number"))
+let number2 = Number(prompt("Please, enter second number"))
 
-const userNumber = Number(prompt("Введіть число від 0 до 9: "))
-if (userNumber >= 0 && userNumber <= 9){
-    if(userNumber == secretNumber){
-        alert("Correct!")
-    }
-    else{
-        alert("Wrong!")
-    }
-}
+console.log(`Hello, ${userName}! The sum of ${number1} and ${number2} is ${number1+number2}`)
