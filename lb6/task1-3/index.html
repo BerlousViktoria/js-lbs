@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/style.css">
+    <title>Tasks</title>
+</head>
+<body>
+    <h1>Task1</h1>
+    <div class="task1-container">
+        <label for="fahrenheit">Температура за Фаренгайтом:</label>
+        <input type="text" name="fahrenheit" id="fahrenheit">
+        <label for="Celsius" id="">Температура за Цельсієм: </label>
+        <input type="text" name="celsius" id="celsius">
+    </div>
+
+    <h1>Task2</h1>
+    <div class="task2-container">
+        <div id="summaryTextBox">Загальний рахунок 0% (0 правильних відповідей з 0)</div>
+        <div>
+            <button id="nextTaskBtn">наступне завдання</button>
+        </div>
+
+        <div class="question-container">
+            <label for="question" id="question">0 x 0 =</label>
+            <input type="text" name="question" id="answer">
+            <button id="checkBtn">перевірити</button>
+            
+        </div>
+        <p id="resultTextBox"></p>
+    </div>
+
+    <h1>Task3</h1>
+    <div class="task3-container">
+        <div id="summaryTextBox2">Загальний рахунок 0% (0 правильних відповідей з 0)</div>
+        <div>
+            <button id="nextTaskBtn2">наступне завдання</button>
+        </div>
+
+        <div class="options-group">
+            <p class="question2">0 x 0 =</p>
+
+            <label class="option-item">
+                <input type="radio" name="answerOption" value="1">
+                <span>Варіант 1</span>
+            </label>
+
+            <label class="option-item">
+                <input type="radio" name="answerOption" value="2">
+                <span>Варіант 2</span>
+            </label>
+
+            <label class="option-item">
+                <input type="radio" name="answerOption" value="3">
+                <span>Варіант 3</span>
+            </label>
+
+            <label class="option-item">
+                <input type="radio" name="answerOption" value="4">
+                <span>Варіант 4</span>
+            </label>        
+
+            <p id="resultTextBox2"></p>
+        </div>
+
+    </div>
+
+    <script src="assets/main.js"></script>
+</body>
+</html>
