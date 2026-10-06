@@ -1,0 +1,34 @@
+.captcha-container{
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid gray;
+    align-items: center;
+    margin: 0 auto;
+}
+
+#captcha-holder{
+    display: flex;
+    justify-content: center;
+    gap: 5px; 
+    margin-bottom: 10px;    
+}
+
+.non-visible{
+    visibility: hidden;
+}
+
+.pixel{
+    display: block;
+    width: 5px;
+    height: 5px;
+    background-color: red;
+}
+
+.pixelsHolder{
+    width: 15px;
+    height: 25px;
+    display: grid;
+    grid-template-columns: repeat(3, 5px);
+    grid-template-rows: repeat(5, 5px);
+}
