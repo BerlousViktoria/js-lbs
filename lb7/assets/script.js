@@ -49,11 +49,16 @@ function showTab(tabName) {
 
 function tabsClickable(){
     tabs.forEach(function (tab) {
-    tab.addEventListener('click', function (event) {
-        const tabName = event.currentTarget.dataset.tab;
-        hideTabs();
-        showTab(tabName);
-    });
+        tab.addEventListener('click', function (event) {
+            console.log(event.type);
+            console.log(event.target);
+            console.log(event.currentTarget);
+
+
+            const tabName = event.currentTarget.dataset.tab;
+            hideTabs();
+            showTab(tabName);
+        });
     });
 }
 
@@ -61,8 +66,27 @@ function tabsClickable(){
 // BORDER RADIUS
 // ==============================
 function generateBorderRadius() {
-// Реалізувати відповідно до завдання
+    const topLeftRadius = topLeft.value;    
+    const topRightRadius = topRight.value;
+    const bottomRightRadius = bottomRight.value;
+    const bottomLeftRadius = bottomLeft.value;
+
+    const radius = `${topLeftRadius}px ${topRightRadius}px 
+    ${bottomRightRadius}px ${bottomLeftRadius}px`;
+    preview.style.borderRadius = radius;
+
+    topLeftValue.textContent = `${topLeftRadius} px`;
+    topRightValue.textContent = `${topRightRadius} px`;
+    bottomRightValue.textContent = `${bottomRightRadius} px`;
+    bottomLeftValue.textContent = `${bottomLeftRadius} px`;
+
+    cssCode.value = `border-radius: ${radius};`;
 }
+
+topLeft.addEventListener('input', generateBorderRadius);
+topRight.addEventListener('input', generateBorderRadius);
+bottomRight.addEventListener('input', generateBorderRadius);
+bottomLeft.addEventListener('input', generateBorderRadius);
 
 // ==============================
 // COPY
