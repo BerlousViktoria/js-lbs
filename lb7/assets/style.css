@@ -60,6 +60,9 @@ h1 {
   margin-top: 20px;
   background: #ddd;
 }
+.preview.hovered {
+  outline: 3px solid #333;
+}
 #coordinates {
   margin-top: 10px;
 }

@@ -18,10 +18,10 @@
                 Border Radius
             </button>
             <button class="tab" type="button" data-tab="property-2">
-                Property 2
+                Text COlor
             </button>
             <button class="tab" type="button" data-tab="property-3">
-                Property 3
+                Font Weight
             </button>
         </div>
 
@@ -68,13 +68,25 @@
         </div>
 
         <div class="tab-content" data-content="property-2">
-            <h2>Property 2</h2>
-            <div id="property-2-controls"></div>
+            <h2>Text Color</h2>
+            <div id="property-2-controls" class="control">
+                <label for="text-color">Text Color</label>
+                <input id="text-color" type="color" value="#222222">
+            </div>
         </div>
 
         <div class="tab-content" data-content="property-3">
-            <h2>Property 3</h2>
-            <div id="property-3-controls"></div>
+            <h2>Font Weight</h2>
+            <div id="property-3-controls" class="control">
+                <label for="font-weight">Saturation</label>
+                <select id="font-weight">
+                    <option value="normal">normal (400)</option>
+                    <option value="bold">bold (700)</option>
+                    <option value="300">300 (light)</option>
+                    <option value="600">600 (semi-bold)</option>
+                    <option value="900">900 (black)</option>
+                </select>
+            </div>
         </div>
 
         <section class="preview-section">
