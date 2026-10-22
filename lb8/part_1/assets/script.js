@@ -4,26 +4,138 @@ const ourCoords = {
 };
 
 let watchId = null;
+let map = null;
+let userMarker = null;
+let infoWindow = null;
 
-document.addEventListener('DOMContentLoaded', getMyLocation)
+document.addEventListener('DOMContentLoaded', getMyLocation);
 
 function getMyLocation() {
+    const watchButton = document.getElementById("watch");
+    if (watchButton) watchButton.onclick = watchLocation;
+
+    const clearWatchButton = document.getElementById("clearWatch");
+    if (clearWatchButton) clearWatchButton.onclick = clearWatch;
+
+    const goToDestBtn = document.getElementById("goToDest");
+    if (goToDestBtn) goToDestBtn.onclick = goToDestination;
+
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(displayLocation, displayError);
-        var watchButton = document.getElementById("watch");
-        watchButton.onclick = watchLocation;
-        var clearWatchButton = document.getElementById("clearWatch");
-        clearWatchButton.onclick = clearWatch;
     } else {
         alert("Oops, no geolocation support");
     }
 }
 
-function displayLocation (position){
-    let latitude = position.coords.latitude
-    let longitude = position.coords.longitude
-    let div = document.getElementById("location")
-    div.innerHTML = `You are at Latitude: ${latitude}, Longitude: ${longitude}`
+function displayLocation(position) {
+    let latitude = position.coords.latitude;
+    let longitude = position.coords.longitude;
+
+    let div = document.getElementById("location");
+    if (div) {
+        div.innerHTML = `You are at Latitude: ${latitude}, Longitude: ${longitude} (with ${position.coords.accuracy} meters accuracy)`;
+    }
+
+    let km = computeDistance(position.coords, ourCoords);
+    let distance = document.getElementById("distance");
+    if (distance) {
+        distance.innerHTML = `You are ${km.toFixed(2)} km from the College`;
+    }
+
+    initMap(latitude, longitude);
+}
+
+function initMap(lat, lng) {
+    const mapDiv = document.getElementById("map");
+    if (!mapDiv) return;
+
+    const pos = { lat: lat, lng: lng };
+
+    if (!map) {
+        map = new google.maps.Map(mapDiv, {
+            zoom: 15,
+            center: pos,
+            mapId: "DEMO_MAP_ID"
+        });
+
+        infoWindow = new google.maps.InfoWindow();
+
+        userMarker = new google.maps.marker.AdvancedMarkerElement({
+            map: map,
+            position: pos,
+            title: "Ви тут",
+            gmpClickable: true
+        });
+
+        userMarker.addEventListener("gmp-click", () => {
+            infoWindow.setContent(`<b>Ви тут:</b><br>${lat.toFixed(4)}, ${lng.toFixed(4)}`);
+            infoWindow.open({
+                anchor: userMarker,
+                map: map
+            });
+        });
+    } else {
+        map.setCenter(pos);
+        if (userMarker) {
+            userMarker.position = pos;
+        }
+    }
+
+    addHistoryMarker(lat, lng);
+}
+
+function addHistoryMarker(lat, lng) {
+    if (!map) return;
+
+    const timeString = new Date().toLocaleTimeString();
+    const pos = { lat: lat, lng: lng };
+
+    const histMarker = new google.maps.marker.AdvancedMarkerElement({
+        map: map,
+        position: pos,
+        title: `Час: ${timeString}`,
+        gmpClickable: true
+    });
+
+    histMarker.addEventListener("gmp-click", () => {
+        if (infoWindow) {
+            infoWindow.setContent(`<b>Координати:</b> ${lat.toFixed(4)}, ${lng.toFixed(4)}<br><b>Час:</b> ${timeString}`);
+            infoWindow.open({
+                anchor: histMarker,
+                map: map
+            });
+        }
+    });
+}
+
+function goToDestination() {
+    let lat = parseFloat(document.getElementById("destLat").value);
+    let lng = parseFloat(document.getElementById("destLng").value);
+
+    if (!isNaN(lat) && !isNaN(lng) && map) {
+        const destPos = { lat: lat, lng: lng };
+
+        map.panTo(destPos);
+
+        const destMarker = new google.maps.marker.AdvancedMarkerElement({
+            map: map,
+            position: destPos,
+            title: "Пункт призначення",
+            gmpClickable: true
+        });
+
+        destMarker.addEventListener("gmp-click", () => {
+            if (infoWindow) {
+                infoWindow.setContent(`<b>Пункт призначення:</b><br>${lat.toFixed(4)}, ${lng.toFixed(4)}`);
+                infoWindow.open({
+                    anchor: destMarker,
+                    map: map
+                });
+            }
+        });
+    } else {
+        alert("Будь ласка, введіть коректні числові координати!");
+    }
 }
 
 function displayError(error) {
@@ -34,12 +146,14 @@ function displayError(error) {
         3: "Request timed out"
     };
 
-    const errorMessage = errorTypes[error.code];
+    let errorMessage = errorTypes[error.code] || "Unknown error";
     if (error.code == 0 || error.code == 2) {
         errorMessage = errorMessage + " " + error.message;
     }
     let div = document.getElementById("location");
-    div.innerHTML = errorMessage;
+    if (div) {
+        div.innerHTML = errorMessage;
+    }
 }
 
 function computeDistance(startCoords, destCoords) {
@@ -57,37 +171,20 @@ function computeDistance(startCoords, destCoords) {
 }
 
 function degreesToRadians(degrees) {
-    let radians = (degrees * Math.PI) / 180;
-    return radians;
-}
-
-function displayLocation (position){
-    let latitude = position.coords.latitude
-    let longitude = position.coords.longitude
-    let div = document.getElementById("location")
-    div.innerHTML = `You are at Latitude: ${latitude}, Longitude: ${longitude}`
-    let km = computeDistance(position.coords, ourCoords)
-    let distance = document.getElementById("distance")
-    distance.innerHTML = `You are ${km} km from the College`
-}
-
-function displayLocation (position) {
-    let latitude = position.coords.latitude
-    let longitude = position.coords.longitude
-    let div = document.getElementById("location")
-    div.innerHTML = `You are at Latitude: ${latitude}, Longitude: ${longitude}`
-    div.innerHTML += `(with ${position.coords.accuracy} meters accuracy)`
-    let km = computeDistance(position.coords, ourCoords)
-    let distance = document.getElementById("distance")
-    distance.innerHTML = `You are ${km} km from the College`
+    return (degrees * Math.PI) / 180;
 }
 
 function watchLocation() {
-    watchId = navigator.geolocation.watchPosition(displayLocation, displayError);
+    if (navigator.geolocation) {
+        if (watchId !== null) {
+            navigator.geolocation.clearWatch(watchId);
+        }
+        watchId = navigator.geolocation.watchPosition(displayLocation, displayError);
+    }
 }
 
 function clearWatch() {
-    if (watchId) {
+    if (watchId !== null) {
         navigator.geolocation.clearWatch(watchId);
         watchId = null;
     }

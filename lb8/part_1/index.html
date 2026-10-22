@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Where you go, there you are</title>
+    <title>Wherever you go, there you are</title>
 </head>
 <body>
-    <form>
-    <input type="button" id="watch" value="Watch me">
-    <input type="button" id="clearWatch" value="Clear watch">
-    </form>
+    <div>
+        <input type="button" id="watch" value="Watch me">
+        <input type="button" id="clearWatch" value="Clear watch">
+    </div>
+
     <div id="location">Your location will go here.</div>
     <div id="distance">Distance from College will go here.</div>
-    <div id="map" style="height: 300px;"></div>
 
-    <gmp-map
-    center = "38.7946, -106.5348"
-    zoom="4"
-    map-id="DEMO_MAP_ID"
-    style="height: 400px"
-    ></gmp-map>
+    <div id="map" style="height: 400px; width: 100%; margin-top: 10px;"></div>
 
+    <div style="margin-top: 10px;">
+        <label>Широта (Lat): <input type="text" id="destLat" placeholder="48.9228"></label>
+        <label>Довгота (Lng): <input type="text" id="destLng" placeholder="24.7103"></label>
+        <button type="button" id="goToDest">Перейти до пункту призначення</button>
+    </div>    
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDn-Zqwwa0FQYl6Zh6HmvAwpbb6rhgWb2A&libraries=maps,marker&v=beta"></script>
     <script src="assets/script.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDn-Zqwwa0FQYl6Zh6HmvAwpbb6rhgWb2A&libraries=maps""></script>
 </body>
 </html>
