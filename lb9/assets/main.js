@@ -28,6 +28,11 @@ itemContainer.addEventListener('click', (event) => {
             text.classList.remove('crossed');
         }
     }
+
+    if(event.target && event.target.classList.contains('icon')){
+        const item = event.target.closest('.item');
+        item.remove();
+    }
 });
 
 input.addEventListener('keydown', (event)=>{
@@ -40,4 +45,6 @@ input.addEventListener('keydown', (event)=>{
         }   
     }
 })
+
+
 
