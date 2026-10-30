@@ -28,6 +28,24 @@ a {
     background-color: #fff;
 }
 
+.list-sort-container{
+    padding: 10px;
+    justify-content: center;
+    width: 100%;        
+}
+
+.btn{
+    color: #557088;
+    background-color: #e2edf5;
+    width: 200px;
+    margin: 10px 20px;
+    padding: 5px 10px;
+    font-size: 15px;
+    border: 1px;
+    border-radius: 6px;     
+    cursor: pointer;
+}
+
 .input-container {
     width: 100%;
     border-bottom: 1px solid #dcdcdc;

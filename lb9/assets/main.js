@@ -1,5 +1,8 @@
 const itemContainer = document.querySelector('.item-container');
 const input = document.getElementById('input');
+const doneBtn = document.getElementById('doneBtn');
+const undoneBtn = document.getElementById('undoneBtn');
+const allBtn = document.getElementById('allBtn');
 
 function addTask(todoText, date){
     const todoItem = `
@@ -45,6 +48,38 @@ input.addEventListener('keydown', (event)=>{
         }   
     }
 })
+
+allBtn.addEventListener('click', () => {
+    const items = document.querySelectorAll('.item');
+    items.forEach(item => {
+        item.classList.remove('d-none');
+    });
+});
+
+doneBtn.addEventListener('click', ()=>{
+    const items = document.querySelectorAll('.item');
+    items.forEach(item => {
+        const text = item.querySelector('p');
+        if(text.classList.contains('crossed')){
+            item.classList.add('d-none');
+        } else{
+            item.classList.remove('d-none');
+        }
+    })
+})
+
+undoneBtn.addEventListener('click', ()=>{
+    const items = document.querySelectorAll('.item');
+    items.forEach(item => {
+        const text = item.querySelector('p');
+        if(text.classList.contains('crossed')){
+            item.classList.remove('d-none');
+        } else{
+            item.classList.add('d-none');
+        }
+    })
+})
+
 
 
 
