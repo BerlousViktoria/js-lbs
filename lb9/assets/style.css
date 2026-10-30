@@ -9,6 +9,10 @@ body {
     display: flex;
 }
 
+.d-none{
+    display: none;
+}
+
 a {
     text-decoration: none;
 }
@@ -92,4 +96,10 @@ a {
 .icon:hover {
     background-color: #ff4d4d;
     color: #ffffff;
+}
+
+/* js */
+
+.crossed{
+    text-decoration: line-through;
 }
