@@ -307,3 +307,7 @@ a{
 .delete-btn:hover {
     background-color: #cc0000;
 }
+
+#makePurchase{
+    background-color: red;;
+}

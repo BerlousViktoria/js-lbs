@@ -46,6 +46,8 @@ const cartPage = document.getElementById('cartPage');
 const cartHeaderIcon = document.getElementById('cartHeaderIcon');
 const backToShopBtn = document.getElementById('backToShopBtn');
 const cartItems = document.getElementById('cartItems');
+const purchaseBtn = document.getElementById('makePurchase');
+const afterPurchaseModal = document.getElementById('afterPurchaseModal');
 
 
 // повернення до магазину / івент лістенери
@@ -216,3 +218,15 @@ function updateCartTotal() {
         totalSumElement.textContent = `${totalSum.toLocaleString()} грн`;
     }
 }
+
+// оплата
+
+purchaseBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    cartPage.classList.add('hidden');
+    afterPurchaseModal.classList.add('active');
+})
+
+
+
