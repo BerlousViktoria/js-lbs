@@ -231,6 +231,9 @@ a{
 
 .d-flex{
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;    
 }
 
 .cart-page {
@@ -248,4 +251,59 @@ a{
     border: 1px solid gray;
     padding: 10px;
     text-align: center;
+}
+
+/* card in cart */
+
+.item {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+    width: 100%;
+}
+
+.mini-image img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    display: block;
+}
+
+.mini-name {
+    flex: 2;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.mini-name a {
+    color: rgb(0, 119, 255);
+}
+
+.mini-price {
+    flex: 1;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.item input[type="text"] {
+    width: 130px;
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 7px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.delete-btn:hover {
+    background-color: #cc0000;
 }
