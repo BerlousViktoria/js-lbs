@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,7 +52,7 @@
                 </div>
                 <div class="price"><span class="discount">14 999₴</span>12 999₴</div>            
                 <div class="button">
-                    <a href="#" class="btn">у корзину</a>
+                    <a href="#" class="btn add-to-cart-btn">у корзину</a>
                 </div>
             </div>
 
@@ -70,7 +70,7 @@
                 </div>
                 <div class="price"><span class="discount"></span>2 499₴</div>            
                 <div class="button">
-                    <a href="#" class="btn">у корзину</a>
+                    <a href="#" class="btn add-to-cart-btn">у корзину</a>
                 </div>
             </div>
 
@@ -89,7 +89,7 @@
                 </div>
                 <div class="price"><span class="discount"></span>16 199₴</div>
                 <div class="button">
-                    <a href="#" class="btn">у корзину</a>
+                    <a href="#" class="btn add-to-cart-btn">у корзину</a>
                 </div>
             </div>    
             <div class="slide slide__left">&lt;</div>
@@ -97,28 +97,23 @@
         </div>
     </div>
 
-    <div id="cartPage" class="cart-page active">
-        <h2>Ваша корзина</h2>
-        <div id="cartItems">
-            <div class="item d-flex">
-                <a class="mini-image image_link" href="https://content2.rozetka.com.ua/category_tiles/images/original/595563029.jpg" target="_blank">
-                    <img src="https://content2.rozetka.com.ua/category_tiles/images/original/595563029.jpg" alt="фотографія пральної машинки">
-                </a>                
-                <div class="mini-name name">
-                    <a href="https://bt.rozetka.com.ua/ua/lg-8806096719008/p567043177/" class="link" target="_blank">вузька пральна машинка</a>
-                </div>
-                <div class="mini-price price"><span class="discount"></span>16 199₴</div>
-                <input type="text" id="amount" disabled placeholder="(змінити кількість)">
-                <button class="delete-btn" id="deleteProductBtn">Вилучити</button>
-            </div>            
+    <div id="cartPage" class="cart-page hidden">
+        <h2>Ви обрали:</h2>
+
+        <div id="cartItems"></div>
+
+        <div class="cart-total-block">
+            <span>Разом до оплати: </span>
+            <strong id="totalPrice">0 грн</strong>
         </div>
+
         <button id="backToShopBtn" class="modal-btn">Повернутися до покупок</button>
     </div>
 
     <div class="modal-overlay" id="emptyCardModal">
         <div class="modal-window">
             <h3>Корзина порожня</h3>
-            <button class="modal-btn cloaseModalBtn">OK</button>
+            <button class="modal-btn closeModalBtn">OK</button>
         </div>
     </div>
 
