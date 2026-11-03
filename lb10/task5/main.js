@@ -36,11 +36,19 @@ promise3
         console.log(`Помилка: ${error}`)
     })    
 
+
+
+const result = document.getElementById('result')
+const statusElem = document.getElementById('status')
+
 Promise.all(promises)
     .then((values) => {
         let sum = values.reduce((acc, num) => acc + num, 0);
         console.log(`Сума всіх значень: ${sum}`);
+        result.innerHTML = `${sum}`;
+        statusElem.textContent = 'Успішно!'
     })
     .catch((error) =>{
         console.log("Помилка: " + error)
+        statusElem.textContent = 'Помилка!'
     })
