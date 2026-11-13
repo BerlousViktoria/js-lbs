@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пральні машинки</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+    <div class="cart-header-icon" id="cartHeaderIcon">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="cart-badge" id="cartBadge">0</span>
+    </div>
+    
+    <div id="shopPage">
+        <p class="topper">обов'язково додайте своє замовлення</p>
+
+        <div class="wrapper">
+
+            <div class="container" data-id="1">
+                <div class="bage new">новинка</div>
+                <div class="title">
+                    <a href="https://bt.rozetka.com.ua/ua/washing_machines/c80124/33119=stiralno-sushilnie/" target="_blank">прально-сушильні</a></div>
+                <div class="image">
+                    <a href="https://content.rozetka.com.ua/category_tiles/images/original/595563695.jpg" class="image_link" target="_blank">
+                        <img src="https://content.rozetka.com.ua/category_tiles/images/original/595563695.jpg" alt="фотографія пральної машинки">
+                    </a>
+                    <div class="name">
+                        <a href="#" class="link">сушильна машинка</a>
+                    </div>
+                </div>
+                <div class="price"></div>            
+                <div class="button not_available">
+                    <a href="#" class="btn">незабаром у продажі</a>
+                </div>
+            </div>
+
+            <div class="container" data-id="2">
+                <div class="bage sales">хіт продажу</div>
+                <div class="title">
+                    <a href="https://bt.rozetka.com.ua/ua/washing_machines/c80124/108620=invertornyj/" target="_blank">інвенторні</a>
+                </div>
+                <div class="image">
+                    <a href="https://content1.rozetka.com.ua/category_tiles/images/original/595564097.jpg" class="image_link" target="_blank">
+                        <img src="https://content1.rozetka.com.ua/category_tiles/images/original/595564097.jpg" alt="фотографія пральної машинки">
+                    </a>
+                    <div class="name">
+                        <a href="https://bt.rozetka.com.ua/ua/electrolux-ews6406bu/p541483305/" class="link" target="_blank">інвенторна машинка</a>
+                    </div>
+                </div>
+                <div class="price"><span class="discount">14 999₴</span>12 999₴</div>            
+                <div class="button">
+                    <a href="#" class="btn add-to-cart-btn">у корзину</a>
+                </div>
+            </div>
+
+            <div class="container" data-id="3">
+                <div class="title">
+                    <a href="https://bt.rozetka.com.ua/ua/washing_machines/c80124/33119=40884/" target="_blank">напівавтомат</a>
+                </div>
+                <div class="image">
+                    <a href="https://bt.rozetka.com.ua/ua/washing_machines/c80124/33119=40884/" class="image_link" target="_blank">
+                        <img src="https://content2.rozetka.com.ua/category_tiles/images/original/595563758.jpg" alt="фотографія пральної машинки">
+                    </a>
+                    <div class="name">
+                        <a href="https://bt.rozetka.com.ua/ua/liberton-lwm-6200-pump/p373958094/" class="link" target="_blank">машинка напівавтомат</a>
+                    </div>
+                </div>
+                <div class="price"><span class="discount"></span>2 499₴</div>            
+                <div class="button">
+                    <a href="#" class="btn add-to-cart-btn">у корзину</a>
+                </div>
+            </div>
+
+            <div class="container" data-id="4">
+                <div class="bage sales">хіт продажу</div>
+                <div class="title">
+                    <a href="https://bt.rozetka.com.ua/ua/washing_machines/c80124/filter/tip-zagruzki-241898=s-frontalnoy-zagruzkoy;33099=35-sm-i-menee,ot-36-do-40-sm,ot-41-do-45-sm,ot-46-do-50-sm;33119=avtomat/" target="_blank">невеликі машинки</a>
+                </div>
+                <div class="image">
+                    <a href="https://content2.rozetka.com.ua/category_tiles/images/original/595563029.jpg" class="image_link" target="_blank">
+                        <img src="https://content2.rozetka.com.ua/category_tiles/images/original/595563029.jpg" alt="фотографія пральної машинки">
+                    </a>
+                    <div class="name">
+                        <a href="https://bt.rozetka.com.ua/ua/lg-8806096719008/p567043177/" class="link" target="_blank">вузька пральна машинка</a>
+                    </div>
+                </div>
+                <div class="price"><span class="discount"></span>16 199₴</div>
+                <div class="button">
+                    <a href="#" class="btn add-to-cart-btn">у корзину</a>
+                </div>
+            </div>    
+            <div class="slide slide__left">&lt;</div>
+            <div class="slide slide__right">&gt;</div>  
+        </div>
+    </div>
+
+    <div id="cartPage" class="cart-page hidden">
+        <h2>Ви обрали:</h2>
+
+        <div id="cartItems"></div>
+
+        <div class="cart-total-block">
+            <span>Разом до оплати: </span>
+            <strong id="totalPrice">0 грн</strong>
+        </div>
+
+        <button id="backToShopBtn" class="modal-btn">Повернутися до покупок</button>
+        <button id="makePurchase" class="modal-btn">Оплатити</button>
+    </div>
+
+    <div class="modal-overlay" id="emptyCardModal">
+        <div class="modal-window">
+            <h3>Корзина порожня</h3>
+            <button class="modal-btn closeModalBtn">OK</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="quantityModal">
+        <div class="modal-window">
+            <h3>Вкажіть кількість:</h3>
+            <input type="number" id="productQuantity" value="1" min="1" max="99" class="quantity-input">
+            <button id="confirmAddToCartBtn" class="modal-btn">Додати до корзини</button>
+            <button class="modal-btn closeModalBtn btn-secondary">Скасувати</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-window">
+            <h3>Товар додано</h3>
+            <div class="modal-actions">
+                <button id="goToCartBtn" class="modal-btn">Перейти у корзину</button>
+                <button id="continueShoppingBtn" class="modal-btn btn-secondary">Повернутися до покупок</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="afterPurchaseModal">
+        <div class="modal-window">
+            <h3>Успішно оплачено</h3>
+            <div class="modal-actions">
+                <button id="continueShoppingBtn" class="modal-btn btn-secondary">ОК</button>
+            </div>
+        </div>
+    </div>    
+
+    <script src="assets/script.js"></script>
+</body>
+</html>
