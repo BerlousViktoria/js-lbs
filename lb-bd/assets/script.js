@@ -1,6 +1,9 @@
+const API_URL = 'http://localhost:3000/api';
+
 const backToShopBtns = document.querySelectorAll('.btn-secondary');
 const modals = document.querySelectorAll('.modal-overlay');
 const quantityModal = document.getElementById('quantityModal');
+const quantityInput = document.getElementById('productQuantity');
 const addToCardConfirm = document.getElementById('confirmAddToCartBtn');
 const successModal = document.getElementById('successModal');
 const goToCartBtn = document.getElementById('goToCartBtn');
@@ -11,37 +14,95 @@ const cartItems = document.getElementById('cartItems');
 const purchaseBtn = document.getElementById('makePurchase');
 const afterPurchaseModal = document.getElementById('afterPurchaseModal');
 
+let selectedProductId = null; // Зберігаємо ID обраного товару перед підтвердженням у модалці
 
-// заглушки
+
+// ================= API-ЗАПИТИ =================
 
 async function loadProducts() {
-    // TODO: GET /api/products -> завантажити товари з БД та відмалювати картки
+    try {
+        const response = await fetch(`${API_URL}/products`);
+        if (!response.ok) throw new Error('Не вдалося завантажити товари');
+        const products = await response.json();
+        renderProducts(products);
+    } catch (error) {
+        console.error('Помилка завантаження товарів:', error);
+    }
 }
 
 async function loadCart() {
-    // TODO: GET /api/cart -> завантажити кошик з БД, викликати createItem() та updateCartTotal()
+    try {
+        const response = await fetch(`${API_URL}/cart`);
+        if (!response.ok) throw new Error('Не вдалося завантажити кошик');
+        const items = await response.json();
+        renderCart(items);
+    } catch (error) {
+        console.error('Помилка завантаження кошика:', error);
+    }
 }
 
-async function addToCart(productId) {
-    // TODO: POST /api/cart -> додати товар у БД або збільшити кількість
+async function addToCart(productId, quantity = 1) {
+    try {
+        const response = await fetch(`${API_URL}/cart`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ product_id: Number(productId), quantity: Number(quantity) })
+        });
+        if (!response.ok) throw new Error('Помилка при додаванні товару');
+        await loadCart(); // Оновлюємо кошик та лічильник на іконці
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 async function updateCartItemQuantity(cartItemId, newAmount) {
-    // TODO: PATCH /api/cart/:id -> оновити кількість товару в БД
+    try {
+        const response = await fetch(`${API_URL}/cart/${cartItemId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ quantity: Number(newAmount) })
+        });
+        if (!response.ok) throw new Error('Помилка при оновленні кількості');
+        await loadCart();
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 async function removeFromCart(cartItemId) {
-    // TODO: DELETE /api/cart/:id -> видалити позицію з кошика в БД
+    try {
+        const response = await fetch(`${API_URL}/cart/${cartItemId}`, {
+            method: 'DELETE'
+        });
+        if (!response.ok) throw new Error('Помилка при видаленні товару');
+        await loadCart();
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 async function createOrder() {
-    // TODO: POST /api/orders -> оформити замовлення та очистити кошик у БД
+    try {
+        const response = await fetch(`${API_URL}/orders`, {
+            method: 'POST'
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            alert(data.message || 'Помилка при оформленні замовлення');
+            return false;
+        }
+        await loadCart(); // Після оформлення кошик у БД очистився — оновлюємо інтерфейс
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
 }
 
 
-// обробники подій
+// ================= ОБРОБНИКИ ПОДІЙ =================
 
-// модальні вікна (закриття)
+// Модальні вікна (закриття)
 backToShopBtns.forEach(button => {
     button.addEventListener('click', (event) => {
         event.preventDefault();
@@ -49,20 +110,26 @@ backToShopBtns.forEach(button => {
     });
 });
 
-// "у корзину"
-document.addEventListener('click', async (event) => {
+// Клік на "у корзину" на картці товару -> відкриваємо модалку вибору кількості
+document.addEventListener('click', (event) => {
     const button = event.target.closest('.add-to-cart-btn');
     if (!button) return;
 
     event.preventDefault();
-    const itemId = button.closest('.container').getAttribute('data-id');
-
-    await addToCart(itemId);
+    selectedProductId = button.closest('.container').getAttribute('data-id');
+    if (quantityInput) quantityInput.value = 1;
     quantityModal.classList.add('active');
 });
 
-addToCardConfirm.addEventListener('click', (event) => {
+// Підтвердження додавання у модалці -> відправляємо POST /api/cart
+addToCardConfirm.addEventListener('click', async (event) => {
     event.preventDefault();
+    if (!selectedProductId) return;
+
+    let qty = quantityInput ? parseInt(quantityInput.value) : 1;
+    if (isNaN(qty) || qty < 1 || qty > 99) qty = 1;
+
+    await addToCart(selectedProductId, qty);
     quantityModal.classList.remove('active');
     successModal.classList.add('active');
 });
@@ -73,7 +140,7 @@ goToCartBtn.addEventListener('click', (event) => {
     cartPage.classList.remove('hidden');
 });
 
-// кошик (закритя / відкриття)
+// Кошик (відкриття / закриття)
 cartHeaderIcon.addEventListener('click', (event) => {
     event.preventDefault();
     cartPage.classList.remove('hidden');
@@ -84,17 +151,16 @@ backToShopBtn.addEventListener('click', (event) => {
     cartPage.classList.add('hidden');
 });
 
-// видалення товару з кошика
+// Видалення товару з кошика
 cartItems.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete-btn')) {
         const itemCard = event.target.closest('.item');
         const itemId = itemCard.getAttribute('data-id');
-
         await removeFromCart(itemId);
     }
 });
 
-// зміна кількості товарів в кошику
+// Зміна кількості товарів в кошику
 cartItems.addEventListener('keydown', (event) => {
     if (event.target.classList.contains('amount-input') && event.key === 'Enter') {
         event.target.blur();
@@ -116,17 +182,19 @@ cartItems.addEventListener('change', async (event) => {
     }
 });
 
-// "оплатити"
+// "Оплатити"
 purchaseBtn.addEventListener('click', async (event) => {
     event.preventDefault();
 
-    await createOrder();
-    cartPage.classList.add('hidden');
-    afterPurchaseModal.classList.add('active');
+    const isSuccess = await createOrder();
+    if (isSuccess) {
+        cartPage.classList.add('hidden');
+        afterPurchaseModal.classList.add('active');
+    }
 });
 
 
-// розмітка
+// ================= РОЗМІТКА =================
 
 function renderProducts(products) {
     const wrapper = document.querySelector('.wrapper');
@@ -150,11 +218,9 @@ function renderProducts(products) {
             priceHTML = `${discountSpan}${Number(product.price).toLocaleString()}₴`;
         }
 
-
         const buttonHTML = product.in_stock
             ? `<div class="button"><a href="#" class="btn add-to-cart-btn">у корзину</a></div>`
             : `<div class="button not_available"><a href="#" class="btn">незабаром у продажі</a></div>`;
-
 
         const cardHTML = `
             <div class="container" data-id="${product.id}">
@@ -179,9 +245,50 @@ function renderProducts(products) {
     });
 }
 
+function renderCart(items) {
+    cartItems.innerHTML = '';
+    let totalSum = 0;
+    let totalCount = 0;
+
+    items.forEach(item => {
+        const itemPrice = Number(item.price);
+        const itemTotal = itemPrice * item.amount;
+        totalSum += itemTotal;
+        totalCount += item.amount;
+
+        const discountHTML = item.discount 
+            ? `<span class="discount">${Number(item.discount).toLocaleString()}₴</span>` 
+            : '';
+
+        const itemHTML = `
+            <div class="item" data-id="${item.id}">
+                <img src="${item.image}" alt="${item.name}">
+                <div class="item-info">
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-price">${discountHTML}${itemPrice.toLocaleString()}₴</div>
+                </div>
+                <input type="number" class="amount-input" data-id="${item.id}" value="${item.amount}" min="1" max="99">
+                <button class="delete-btn">Вилучити</button>
+            </div>
+        `;
+        cartItems.insertAdjacentHTML('beforeend', itemHTML);
+    });
+
+    updateCartTotal(totalSum);
+
+    const cartBadge = document.getElementById('cartBadge');
+    if (cartBadge) {
+        cartBadge.textContent = totalCount;
+    }
+}
+
 function updateCartTotal(totalSum = 0) {
     const totalSumElement = document.getElementById('totalPrice');
     if (totalSumElement) {
         totalSumElement.textContent = `${totalSum.toLocaleString()} грн`;
     }
 }
+
+// Ініціалізація при завантаженні сторінки
+loadProducts();
+loadCart();
