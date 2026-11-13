@@ -1,0 +1,37 @@
+------------------------------- товари script.js lb17
+
+let allProducts = [
+    {
+        id: "1",
+        name: "сушильна машинка",
+        discount: null,
+        price: 0,
+        amount: 0,
+        image: "https://content.rozetka.com.ua/category_tiles/images/original/595563695.jpg"
+    },
+    {
+        id: "2",
+        name: "інвенторна машинка",
+        discount: 14999,
+        price: 12999,
+        amount: 0,        
+        image: "https://content1.rozetka.com.ua/category_tiles/images/original/595564097.jpg"
+    },
+    {
+        id: "3",
+        name: "машинка напівавтомат",
+        discount: null,
+        price: 2499,
+        amount: 0,        
+        image: "https://content2.rozetka.com.ua/category_tiles/images/original/595563758.jpg"
+    },
+    {
+        id: "4",
+        name: "вузька пральна машинка",
+        discount: null,
+        price: 16199,
+        amount: 0,        
+        image: "https://content2.rozetka.com.ua/category_tiles/images/original/595563029.jpg"
+    }
+];
+
