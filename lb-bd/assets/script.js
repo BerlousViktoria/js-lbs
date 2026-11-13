@@ -128,29 +128,55 @@ purchaseBtn.addEventListener('click', async (event) => {
 
 // розмітка
 
-function createItem(item) {
-    const itemTotal = item.price * item.amount;
+function renderProducts(products) {
+    const wrapper = document.querySelector('.wrapper');
+    const leftArrow = wrapper.querySelector('.slide__left');
 
-    const itemHTML = `
-    <div class="item d-flex" data-id="${item.id}">
-        <a class="mini-image image_link" href="#" target="_blank">
-            <img src="${item.image}" alt="${item.name}">
-        </a>                
-        <div class="mini-name name">
-            <a href="#" class="link" target="_blank">${item.name}</a>
-        </div>
-        <div class="mini-price price">
-            <span class="discount">${item.discount ? item.discount + ' ' : ''}</span>${item.price} грн
-        </div>
-        <input type="number" class="amount-input" data-id="${item.id}" value="${item.amount}" min="1" max="99">
-        <div class="item-sum">
-            <span class="item-total-price">${itemTotal.toLocaleString()}</span> грн
-        </div>
-        <button class="delete-btn">Вилучити</button>
-    </div>    
-    `;
+    wrapper.querySelectorAll('.container').forEach(card => card.remove());
 
-    cartItems.insertAdjacentHTML('beforeend', itemHTML);
+    products.forEach(product => {
+        let badgeHTML = '';
+        if (product.badge === 'new') {
+            badgeHTML = `<div class="bage new">новинка</div>`;
+        } else if (product.badge === 'sales') {
+            badgeHTML = `<div class="bage sales">хіт продажу</div>`;
+        }
+
+        let priceHTML = '';
+        if (product.in_stock && product.price) {
+            const discountSpan = product.discount 
+                ? `<span class="discount">${Number(product.discount).toLocaleString()}₴</span>` 
+                : `<span class="discount"></span>`;
+            priceHTML = `${discountSpan}${Number(product.price).toLocaleString()}₴`;
+        }
+
+
+        const buttonHTML = product.in_stock
+            ? `<div class="button"><a href="#" class="btn add-to-cart-btn">у корзину</a></div>`
+            : `<div class="button not_available"><a href="#" class="btn">незабаром у продажі</a></div>`;
+
+
+        const cardHTML = `
+            <div class="container" data-id="${product.id}">
+                ${badgeHTML}
+                <div class="title">
+                    <a href="${product.category_url}" target="_blank">${product.category}</a>
+                </div>
+                <div class="image">
+                    <a href="${product.image_url}" class="image_link" target="_blank">
+                        <img src="${product.image_url}" alt="фотографія пральної машинки">
+                    </a>
+                    <div class="name">
+                        <a href="${product.product_url}" class="link" target="_blank">${product.name}</a>
+                    </div>
+                </div>
+                <div class="price">${priceHTML}</div>
+                ${buttonHTML}
+            </div>
+        `;
+
+        leftArrow.insertAdjacentHTML('beforebegin', cardHTML);
+    });
 }
 
 function updateCartTotal(totalSum = 0) {
