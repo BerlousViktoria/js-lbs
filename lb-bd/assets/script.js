@@ -14,10 +14,8 @@ const cartItems = document.getElementById('cartItems');
 const purchaseBtn = document.getElementById('makePurchase');
 const afterPurchaseModal = document.getElementById('afterPurchaseModal');
 
-let selectedProductId = null; // Зберігаємо ID обраного товару перед підтвердженням у модалці
+let selectedProductId = null;
 
-
-// ================= API-ЗАПИТИ =================
 
 async function loadProducts() {
     try {
@@ -49,7 +47,7 @@ async function addToCart(productId, quantity = 1) {
             body: JSON.stringify({ product_id: Number(productId), quantity: Number(quantity) })
         });
         if (!response.ok) throw new Error('Помилка при додаванні товару');
-        await loadCart(); // Оновлюємо кошик та лічильник на іконці
+        await loadCart();
     } catch (error) {
         console.error(error);
     }
@@ -91,7 +89,7 @@ async function createOrder() {
             alert(data.message || 'Помилка при оформленні замовлення');
             return false;
         }
-        await loadCart(); // Після оформлення кошик у БД очистився — оновлюємо інтерфейс
+        await loadCart();
         return true;
     } catch (error) {
         console.error(error);
@@ -102,7 +100,7 @@ async function createOrder() {
 
 // ================= ОБРОБНИКИ ПОДІЙ =================
 
-// Модальні вікна (закриття)
+
 backToShopBtns.forEach(button => {
     button.addEventListener('click', (event) => {
         event.preventDefault();
